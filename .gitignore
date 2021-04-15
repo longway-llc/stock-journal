@@ -35,3 +35,6 @@ yarn-error.log*
 
 # account sequre data
 utils/JournalRegistar-account.json
+
+# Idea
+.idea
