@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import {GoogleSpreadsheet, GoogleSpreadsheetWorksheet} from 'google-spreadsheet'
-import creds from '../../../utils/JournalRegistar-account.json'
+import {creds} from '../../../settings/creds'
 
 type DimensionsType = 'stock' | 'freezer'
 
