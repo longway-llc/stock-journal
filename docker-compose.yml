@@ -10,10 +10,9 @@ services:
     env_file: .env.local
     ports:
       - 3040:3040
-    working_dir: /app
     volumes:
-      - ./utils:./utils
-    command: 'next start -p 3040'
+      - /utils:/utils
+    command: 'yarn start -p 3040'
     environment:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
