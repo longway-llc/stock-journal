@@ -43,7 +43,7 @@ const RegisterStockForm: FC<RegisterStockFormProps> = ({callback}) => {
     })
 
     const [{loading, error}, postDimensions] = useAxios({
-        url: '/google/stock',
+        url: '/api/google/stock',
         method: 'post',
     }, {manual: true})
 
