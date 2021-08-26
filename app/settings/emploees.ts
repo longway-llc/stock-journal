@@ -1,0 +1,18 @@
+export const employees = [
+  'A.ageeva@lwaero.net',
+  'A.sergeev@lwaero.net',
+  'C.chessa@lwaero.net',
+  'E.kamneva@lwaero.net',
+  'E.lebedev@lwaero.net',
+  'E.tokarchuk@lwaero.net',
+  'F.grinberg@lwaero.net',
+  'I.grigorieva@lwaero.net',
+  'I.pavlov@lwaero.net',
+  'L.gulay@lwaero.net',
+  'M.zaostrozhina@lwaero.net',
+  'N.polinovskaya@lwaero.net',
+  'O.halimanchik@lwaero.net',
+  'O.lukyanchenko@lwaero.net',
+  'S.derbikova@lwaero.net',
+  'S.puchkov@lwaero.net',
+]
