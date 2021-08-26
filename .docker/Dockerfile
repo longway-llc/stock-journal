@@ -8,6 +8,6 @@ COPY ../app/package*.json .
 
 RUN yarn
 
-COPY .. .
+COPY ../app .
 
 RUN yarn build

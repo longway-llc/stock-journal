@@ -14,10 +14,11 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
+  Typography, useTheme,
 } from '@material-ui/core'
 import useAxios from 'axios-hooks'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import Image from 'next/image'
 
 import CorrespondenceForm from '../forms/CorrespondenceForm/CorrespondenceForm'
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) =>  createStyles({
 
 
 const Correspondence:NextPage = () => {
+  const theme = useTheme()
   const styles = useStyles()
   const [perPage, setPerPage] = useState(3)
   const [{ data, loading, error }, refetch] = useAxios({
@@ -87,84 +89,94 @@ const Correspondence:NextPage = () => {
   }
 
   return (
-    <Container maxWidth="xl">
-      <Grid component="header" container className={styles.header}>
-        <Grid item xs>
-          <Typography variant="h5" component="h1" className={styles.title}>
-            Журнал корреспонденции
-          </Typography>
+    <>
+      <Head>
+        <title>Журнал Корреспонденции</title>
+        <meta name="description" content="Учёт бумажной корреспонденции LWAero"/>
+        <meta name="robots" content="noindex"/>
+        <meta name="theme-color" content={theme.palette.text.primary}/>
+        <link rel="icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
+      </Head>
+      <Container maxWidth="xl">
+        <Grid component="header" container className={styles.header}>
+          <Grid item xs>
+            <Typography variant="h5" component="h1" className={styles.title}>
+              Журнал корреспонденции
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid component="main" container spacing={2} className={styles.main}>
-        <Grid item xs={12}>
-          <Typography variant={'subtitle1'}>
-            Введите данные письма
-          </Typography>
-        </Grid>
-        <CorrespondenceForm refetch={refetch}/>
-        <Grid item xs={12} md={8} lg={9} xl={10}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">Введите количество отображаемых записей (макс. 6)</Typography>
-            </Grid>
-            <Grid item xs={12} sm={4} lg={2}>
-              <TextField
-                label="кол-во записей"
-                value={perPage}
-                onChange={(e) => setCount(e.target.value)}
-              />
-            </Grid>
-            <Grid container alignItems="flex-end" item xs={12} md={8}>
-              <Button
-                style={{ width: '200px' }}
-                onClick={handleClick}
-                variant="contained"
-                color="default"
-                disabled={loading}
-              >
-                {loading ? (
-                  <Image src="/small_preloader.svg" width={28} height={28} alt="loading..."/>
-                )
-                  :
-                  ('Получить записи')
-                }
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
-              {data && (
-                <TableContainer component={Paper}>
-                  <Table size="small" aria-label="a dense table">
-                      <TableHead>
-                          <TableRow>
-                            {tableHeaders}
-                          </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {tableRows}
-                      </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-              {error && (
-                <Typography color="error" variant="subtitle2">{error?.response?.data.message}</Typography>
-              )}
+        <Grid component="main" container spacing={2} className={styles.main}>
+          <Grid item xs={12}>
+            <Typography variant={'subtitle1'}>
+              Введите данные письма
+            </Typography>
+          </Grid>
+          <CorrespondenceForm refetch={refetch}/>
+          <Grid item xs={12} md={8} lg={9} xl={10}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1">Введите количество отображаемых записей (макс. 6)</Typography>
+              </Grid>
+              <Grid item xs={12} sm={4} lg={2}>
+                <TextField
+                  label="кол-во записей"
+                  value={perPage}
+                  onChange={(e) => setCount(e.target.value)}
+                />
+              </Grid>
+              <Grid container alignItems="flex-end" item xs={12} md={8}>
+                <Button
+                  style={{ width: '200px' }}
+                  onClick={handleClick}
+                  variant="contained"
+                  color="default"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Image src="/small_preloader.svg" width={28} height={28} alt="loading..."/>
+                  )
+                    :
+                    ('Получить записи')
+                  }
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                {data && (
+                  <TableContainer component={Paper}>
+                    <Table size="small" aria-label="a dense table">
+                        <TableHead>
+                            <TableRow>
+                              {tableHeaders}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {tableRows}
+                        </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+                {error && (
+                  <Typography color="error" variant="subtitle2">{error?.response?.data.message}</Typography>
+                )}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid component="footer" container spacing={2} className={styles.footer}>
-        <Grid item xs>
-          <Typography variant="subtitle2">
-            Посмотреть все записи по
-            {' '}
-            <Link href="https://docs.google.com/spreadsheets/d/1r0rLeu3AJO1xxfCqCUcAmDKeyB-xL8nk-txfOgSn1zU/edit#gid=0">
-              ссылке
-            </Link>
-          </Typography>
+        <Grid component="footer" container spacing={2} className={styles.footer}>
+          <Grid item xs>
+            <Typography variant="subtitle2">
+              Посмотреть все записи по
+              {' '}
+              <Link href="https://docs.google.com/spreadsheets/d/1r0rLeu3AJO1xxfCqCUcAmDKeyB-xL8nk-txfOgSn1zU/edit#gid=0">
+                ссылке
+              </Link>
+            </Typography>
+          </Grid>
+          <Typography variant="caption">При возникновении ошибок, обратитесь по <a href="mailto:admin@lwaero.net">этому адресу</a></Typography>
         </Grid>
-        <Typography variant="caption">При возникновении ошибок, обратитесь по <a href="mailto:admin@lwaero.net">этому адресу</a></Typography>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   )
 }
 

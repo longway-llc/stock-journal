@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
 import { Container, createStyles, Grid, makeStyles, Tab, Tabs, Typography, useTheme } from '@material-ui/core'
 import Head from 'next/head'
@@ -47,11 +48,11 @@ function TabPanel(props: TabPanelProps) {
 
 
 export default function Home() {
+  const theme = useTheme()
   const styles = useStyles()
   const [page, setPage] = useState(0)
   const [type, setType] = useState('stock')
   const [isNeedUpdate, setIsNeedUpdate] = useState(null)
-  const theme = useTheme()
 
   const handleChange = (event: React.ChangeEvent<unknown>, newValue: number) => {
     setPage(newValue)
