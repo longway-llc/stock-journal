@@ -23,6 +23,7 @@ const schema: yup.SchemaOf<TFormData> = yup.object().shape({
   type: yup.mixed().oneOf(['incoming', 'outgoing']).required('Обязательное поле'),
   target: yup.string().required('Обязательное поле'),
   theme: yup.string().required('Обязательное поле'),
+  listCount: yup.number().required('Обязательное поле').positive('Должно быть положительным значением'),
   handler: yup.string().required('Обязательное поле'),
   number: yup.string().required('Обязательное поле, если отсутствует поставьте "-"'),
   lastReplyDate: yup.string().notRequired(),
@@ -114,6 +115,19 @@ const CorrespondenceForm = ({ refetch }) => {
             type="text"
             error={!!errors.theme}
             helperText={errors.theme?.message}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={12}>
+          <TextField
+            inputProps={{ ...register('listCount') }}
+            fullWidth
+            label="Количество листов"
+            type="number"
+            error={!!errors.listCount}
+            helperText={errors.listCount?.message}
             InputLabelProps={{
               shrink: true,
             }}

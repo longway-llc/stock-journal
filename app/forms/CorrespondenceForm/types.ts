@@ -3,6 +3,7 @@ export type TFormData = {
   type: 'incoming' | 'outgoing'
   target: string
   theme: string
+  listCount: number
   handler: string
   number: string
   lastReplyDate?: string

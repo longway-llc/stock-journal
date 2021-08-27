@@ -68,9 +68,9 @@ const Correspondence:NextPage = () => {
   ), [data] )
 
   const tableRows = useMemo(() => data && data.rows.map((row, i) => (
-    <TableRow key={`${row[0][0]}_${i}`}>
-      {row.map((cell) => (
-        <TableCell key={cell}>{cell}</TableCell>
+    <TableRow key={`${row[0][4]}_${i}`}>
+      {row.map((cell, _i) => (
+        <TableCell key={`${cell}-${_i}`}>{cell}</TableCell>
       ))}
     </TableRow>
   )), [data])

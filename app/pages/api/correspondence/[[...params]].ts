@@ -46,7 +46,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const lastDate = getDateFromCell(rows[rows.length - 1].date)
 
-        const isNewestDay = lastDate.getDate() < reqDate.getDay()
+        const isNewestDay = lastDate.getDate() < reqDate.getDate()
 
         let isNeedReplace = false
         // Если письмо первое за день
@@ -83,8 +83,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             firstIndexOfReqDate = rows.findIndex(row => {
               const checkDate = getDateFromCell(row.date)
               return checkDate.getDate() > reqDate.getDate()
-            }) - 1
-            lastIndexOfReqDate = firstIndexOfReqDate
+            })
+            const isFirst = firstIndexOfReqDate == 0
+            firstIndexOfReqDate = isFirst ? 0 : firstIndexOfReqDate - 1
+            lastIndexOfReqDate = isFirst ? -1 : firstIndexOfReqDate
           } else {
             lastIndexOfReqDate = rows.map(row => row.date).lastIndexOf(currentDate)
           }
@@ -100,6 +102,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             body.type == 'outgoing' ? 'исходящее' : 'входящее',
             body.target,
             body.theme,
+            body.listCount,
             body.handler,
             body.number,
             body?.lastReplyDate,
