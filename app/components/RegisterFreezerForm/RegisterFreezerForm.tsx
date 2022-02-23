@@ -1,13 +1,24 @@
 import React, { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 import useAxios from 'axios-hooks'
 import * as yup from 'yup'
 
 interface FormData {
   time: string
   temperature: number
+  freezerName: string
   employee: string
   note: string
 }
@@ -20,6 +31,7 @@ const schema: yup.SchemaOf<FormData> = yup.object().shape({
   time: yup.string(),
   temperature: yup.number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
   employee: yup.string().required('Обязательное поле'),
+  freezerName: yup.string().required('Обязательное поле'),
   note: yup.string(),
 })
 
@@ -39,6 +51,9 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
+    defaultValues: {
+      freezerName: '№1',
+    },
   })
 
   const [{ loading, error }, postDimensions] = useAxios({
@@ -75,6 +90,22 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
                            error={!!errors.temperature}
                            helperText={errors.temperature?.message}
                 />
+            </Grid>
+          <Grid item xs>
+            <FormControl fullWidth>
+              <InputLabel id="freezerName-label">Холодильник</InputLabel>
+              <Select
+                labelId="freezerName-label"
+                id="freezerName"
+                defaultValue={'№1'}
+                inputProps={{ ...register('freezerName') }}
+                error={!!errors.freezerName}
+
+              >
+                <MenuItem value={'№1'}>№1</MenuItem>
+                <MenuItem value={'№2'}>№2</MenuItem>
+              </Select>
+            </FormControl>
             </Grid>
             <Grid item>
                 <TextField label="Сотрудник"
