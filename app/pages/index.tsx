@@ -1,7 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
-import { Container, createStyles, Grid, makeStyles, Tab, Tabs, Typography, useTheme } from '@material-ui/core'
+import {
+  Container,
+  createStyles,
+  Grid,
+  Link as StyledLink,
+  makeStyles,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from '@material-ui/core'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import JournalViewer from '../components/JournalViewer/JournalViewer'
 import RegisterFreezerForm from '../components/RegisterFreezerForm/RegisterFreezerForm'
@@ -84,6 +95,12 @@ export default function Home() {
                         <Typography variant={'h4'} className={styles.header}>Журнал регистрации измерений</Typography>
                     </Grid>
                     <Grid item xs={12}>
+                        <Typography variant={'subtitle1'}>Перейти на страницу
+                          {' '}
+                          <Link href={'/maintenance'}><StyledLink style={{ cursor: 'pointer' }}>
+                            журналов регламентных работ
+                          </StyledLink></Link>
+                        </Typography>
                         <Typography variant={'subtitle1'}><b>Внести показания</b></Typography>
                         <Tabs
                             value={page}
