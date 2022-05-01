@@ -15,7 +15,7 @@ import useAxios from 'axios-hooks'
 import { format } from 'date-fns'
 import * as yup from 'yup'
 
-import { employees } from '../../settings/emploees'
+import { employees } from '../../settings/employees'
 import { TFormData } from './types'
 
 const schema: yup.SchemaOf<TFormData> = yup.object().shape({
