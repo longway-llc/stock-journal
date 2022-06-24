@@ -3,6 +3,7 @@ export const employees = [
   'A.goloviznina@lwaero.net',
   'A.sergeev@lwaero.net',
   'C.chessa@lwaero.net',
+  'D.fedorova@lwaero.net',
   'E.kamneva@lwaero.net',
   'E.lebedev@lwaero.net',
   'E.tokarchuk@lwaero.net',
