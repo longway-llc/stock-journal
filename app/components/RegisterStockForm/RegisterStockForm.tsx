@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Grid, makeStyles, TextField, Typography } from '@material-ui/core'
+import { Button, Grid, TextField, Typography } from '@mui/material'
 import useAxios from 'axios-hooks'
-import * as yup from 'yup'
+import { number, object, ObjectSchema, string } from 'yup'
 
 interface FormData {
   time: string
@@ -13,30 +13,19 @@ interface FormData {
   note: string
 }
 
-const schema: yup.SchemaOf<FormData> = yup.object().shape({
-  time: yup.string(),
-  temperature: yup.number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
-  humidity: yup.number().test('value', 'Значение вне диапазона', h => h < 100 && h >= 0).required('Обязательное поле'),
-  employee: yup.string().required('Обязательное поле'),
-  note: yup.string(),
+const schema: ObjectSchema<FormData> = object({
+  time: string(),
+  temperature: number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
+  humidity: number().test('value', 'Значение вне диапазона', h => h < 100 && h >= 0).required('Обязательное поле'),
+  employee: string().required('Обязательное поле'),
+  note: string(),
 })
-
-const useStyles = makeStyles(theme => ({
-  dimensions: {
-    marginTop: theme.spacing(2),
-  },
-  textArea: {
-    width: '100%',
-    resize: 'none',
-  },
-}))
 
 type RegisterStockFormProps = {
   callback: React.Dispatch<number>
 }
 
 const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
-  const styles = useStyles()
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -57,7 +46,10 @@ const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
 
   return (
         <Grid container component={'form'} spacing={2} noValidate autoComplete="off"
-              className={styles.dimensions} onSubmit={handleSubmit(submit)}>
+              sx={{
+                marginTop: 2,
+              }}
+              onSubmit={handleSubmit(submit)}>
             <Grid item>
                 <TextField
                     inputProps={{ ...register('time') }}
@@ -93,9 +85,18 @@ const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
             </Grid>
             <Grid item xs={12}>
                 <Controller
-                    render={({ field: { value, onChange, onBlur } }) => <textarea onChange={onChange}
-                                                                              onBlur={onBlur} value={value}
-                                                                              className={styles.textArea} rows={5}/>}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <textarea
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        rows={5}
+                        style={{
+                          width: '100%',
+                          resize: 'none',
+                        }}
+                    />)
+                }
                     name="note"
                     control={control}
                     defaultValue=""

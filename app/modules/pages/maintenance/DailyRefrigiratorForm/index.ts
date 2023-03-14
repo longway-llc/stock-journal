@@ -1,1 +1,1 @@
-export {default as DailyRefrigiratorForm} from './DailyRefrigiratorForm'
+export { default as DailyRefrigiratorForm } from './DailyRefrigiratorForm'

@@ -1,15 +1,11 @@
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import {
-  Button,
-  Grid,
-  makeStyles,
-  TextField, Typography,
-} from '@material-ui/core'
+import { Button, Grid, TextField, Typography } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import useAxios from 'axios-hooks'
 import { useSWRConfig } from 'swr'
-import * as yup from 'yup'
+import { object, ObjectSchema, string } from 'yup'
 
 
 interface FormData {
@@ -18,10 +14,10 @@ interface FormData {
   note: string
 }
 
-const schema: yup.SchemaOf<FormData> = yup.object().shape({
-  time: yup.string(),
-  employee: yup.string().required('Обязательное поле'),
-  note: yup.string(),
+const schema: ObjectSchema<FormData> = object({
+  time: string(),
+  employee: string().required('Обязательное поле'),
+  note: string(),
 })
 
 const useStyles = makeStyles(() => ({

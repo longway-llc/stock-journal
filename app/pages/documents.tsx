@@ -2,10 +2,8 @@ import React, { useMemo, useState } from 'react'
 import {
   Button,
   Container,
-  createStyles,
   Grid,
   Link,
-  makeStyles,
   Paper,
   Table,
   TableBody,
@@ -14,8 +12,9 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography, useTheme,
-} from '@material-ui/core'
+  Typography,
+  useTheme,
+} from '@mui/material'
 import useAxios from 'axios-hooks'
 import { NextPage } from 'next'
 import Head from 'next/head'
@@ -23,33 +22,8 @@ import Image from 'next/image'
 
 import DocumentsForm from '../forms/DocumentsForm/DocumentsForm'
 
-const useStyles = makeStyles((theme) =>  createStyles({
-  header: {
-    marginTop: theme.spacing(4),
-  },
-  main: {
-    marginTop: theme.spacing(4),
-  },
-  footer: {
-    margin: theme.spacing(4, 0),
-  },
-  title: {
-    padding: theme.spacing(2, 3),
-    background: theme.palette.common.black,
-    color: theme.palette.common.white,
-    fontWeight: 'bold',
-    [theme.breakpoints.up('sm')]:{
-      display: 'inline-block',
-    },
-  },
-  form: {
-    gap: theme.spacing(2),
-  },
-}))
-
 const Correspondence:NextPage = () => {
   const theme = useTheme()
-  const styles = useStyles()
   const [perPage, setPerPage] = useState(3)
   const [{ data, loading, error }, refetch] = useAxios({
     url: `/api/documents/${perPage}`,
@@ -86,96 +60,107 @@ const Correspondence:NextPage = () => {
     await refetch()
   }
 
-  return (
-    <>
-      <Head>
-        <title>Журнал документов</title>
-        <meta name="description" content="Учёт бумажных докуметов LWAero"/>
-        <meta name="robots" content="noindex"/>
-        <meta name="theme-color" content={theme.palette.text.primary}/>
-        <link rel="icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
-        <link rel="shortcut icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
-      </Head>
-      <Container maxWidth="xl">
-        <Grid component="header" container className={styles.header}>
-          <Grid item xs>
-            <Typography variant="h5" component="h1" className={styles.title}>
-              Журнал документов
-            </Typography>
-          </Grid>
+  return <>
+    <Head>
+      <title>Журнал документов</title>
+      <meta name="description" content="Учёт бумажных докуметов LWAero"/>
+      <meta name="robots" content="noindex"/>
+      <meta name="theme-color" content={theme.palette.text.primary}/>
+      <link rel="icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
+      <link rel="shortcut icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
+    </Head>
+    <Container maxWidth="xl">
+      <Grid component="header" container sx={{
+        mt: 4,
+      }}>
+        <Grid item xs>
+          <Typography variant="h5" component="h1" sx={{
+            py: 2, 
+            px: 3,
+            backgroundColor: 'common.black',
+            color: 'common.white',
+            fontWeight: 'bold',
+            sm: {
+              display: 'inline-block',
+            },
+          }}>
+            Журнал документов
+          </Typography>
         </Grid>
-        <Grid component="main" container spacing={2} className={styles.main}>
-          <Grid item xs={12}>
-            <Typography variant={'subtitle1'}>
-              Введите данные документа
-            </Typography>
-          </Grid>
-          <DocumentsForm refetch={refetch}/>
-          <Grid item xs={12} md={8} lg={9} xl={10}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="subtitle1">Введите количество отображаемых записей (макс. 6)</Typography>
-              </Grid>
-              <Grid item xs={12} sm={4} lg={2}>
-                <TextField
-                  label="кол-во записей"
-                  value={perPage}
-                  onChange={(e) => setCount(e.target.value)}
-                />
-              </Grid>
-              <Grid container alignItems="flex-end" item xs={12} md={8}>
-                <Button
-                  style={{ width: '200px' }}
-                  onClick={handleClick}
-                  variant="contained"
-                  color="default"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <Image src="/small_preloader.svg" width={28} height={28} alt="loading..."/>
-                  )
-                    :
-                    ('Получить записи')
-                  }
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                {data && (
-                  <TableContainer component={Paper}>
-                    <Table size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                              {tableHeaders}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {tableRows}
-                        </TableBody>
-                    </Table>
-                  </TableContainer>
-                )}
-                {error && (
-                  <Typography color="error" variant="subtitle2">{error?.response?.data.message}</Typography>
-                )}
-              </Grid>
+      </Grid>
+      <Grid component="main" container spacing={2} sx={{
+        mt: 4,
+      }}>
+        <Grid item xs={12}>
+          <Typography variant={'subtitle1'}>
+            Введите данные документа
+          </Typography>
+        </Grid>
+        <DocumentsForm refetch={refetch}/>
+        <Grid item xs={12} md={8} lg={9} xl={10}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">Введите количество отображаемых записей (макс. 6)</Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} lg={2}>
+              <TextField
+                label="кол-во записей"
+                value={perPage}
+                onChange={(e) => setCount(e.target.value)}
+              />
+            </Grid>
+            <Grid container alignItems="flex-end" item xs={12} md={8}>
+              <Button
+                style={{ width: '200px' }}
+                onClick={handleClick}
+                variant="contained"
+                disabled={loading}>
+                {loading ? (
+                  <Image src="/small_preloader.svg" width={28} height={28} alt="loading..."/>
+                )
+                  :
+                  ('Получить записи')
+                }
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              {data && (
+                <TableContainer component={Paper}>
+                  <Table size="small" aria-label="a dense table">
+                      <TableHead>
+                          <TableRow>
+                            {tableHeaders}
+                          </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {tableRows}
+                      </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+              {error && (
+                <Typography color="error" variant="subtitle2">{error?.response?.data.message}</Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>
-        <Grid component="footer" container spacing={2} className={styles.footer}>
-          <Grid item xs>
-            <Typography variant="subtitle2">
-              Посмотреть все записи по
-              {' '}
-              <Link href="https://docs.google.com/spreadsheets/d/1r0rLeu3AJO1xxfCqCUcAmDKeyB-xL8nk-txfOgSn1zU/edit#gid=0">
-                ссылке
-              </Link>
-            </Typography>
-          </Grid>
-          <Typography variant="caption">При возникновении ошибок, обратитесь по <a href="mailto:admin@lwaero.net">этому адресу</a></Typography>
+      </Grid>
+      <Grid component="footer" container spacing={2} sx={{
+        my: 4,
+      }}>
+        <Grid item xs>
+          <Typography variant="subtitle2">
+            Посмотреть все записи по
+            {' '}
+            <Link href="https://docs.google.com/spreadsheets/d/1r0rLeu3AJO1xxfCqCUcAmDKeyB-xL8nk-txfOgSn1zU/edit#gid=0">
+              ссылке
+            </Link>
+          </Typography>
         </Grid>
-      </Container>
-    </>
-  )
+        <Typography variant="caption">При возникновении ошибок, обратитесь по <a href="mailto:admin@lwaero.net">этому адресу</a></Typography>
+      </Grid>
+    </Container>
+  </>
 }
 
 export default Correspondence

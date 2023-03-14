@@ -1,1 +1,1 @@
-export {default as ShelvingEquipmentForm} from './ShelvingEquipmentForm'
+export { default as ShelvingEquipmentForm } from './ShelvingEquipmentForm'

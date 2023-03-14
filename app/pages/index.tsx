@@ -1,16 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
-import {
-  Container,
-  createStyles,
-  Grid,
-  Link as StyledLink,
-  makeStyles,
-  Tab,
-  Tabs,
-  Typography,
-  useTheme,
-} from '@material-ui/core'
+import { Container, Grid, Link as StyledLink, Tab, Tabs, Typography, useTheme } from '@mui/material'
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -18,26 +8,11 @@ import JournalViewer from '../components/JournalViewer/JournalViewer'
 import RegisterFreezerForm from '../components/RegisterFreezerForm/RegisterFreezerForm'
 import RegisterStockForm from '../components/RegisterStockForm/RegisterStockForm'
 
-
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
 }
-
-
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    marginTop: theme.spacing(7),
-  },
-  header: {
-    backgroundColor: theme.palette.common.black,
-    color: 'white',
-    fontWeight: 'bold',
-    padding: theme.spacing(2),
-    display: 'inline-block',
-  },
-}))
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props
@@ -60,7 +35,6 @@ function TabPanel(props: TabPanelProps) {
 
 export default function Home() {
   const theme = useTheme()
-  const styles = useStyles()
   const [page, setPage] = useState(0)
   const [type, setType] = useState('stock')
   const [isNeedUpdate, setIsNeedUpdate] = useState(null)
@@ -89,17 +63,25 @@ export default function Home() {
                 <link rel="shortcut icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
             </Head>
 
-            <Container className={styles.root} maxWidth={'md'}>
+            <Container sx={{ mt: 7 }} maxWidth={'md'}>
                 <Grid container spacing={3} direction={'column'}>
                     <Grid item xs={12}>
-                        <Typography variant={'h4'} className={styles.header}>Журнал регистрации измерений</Typography>
+                        <Typography variant={'h4'}  sx={{
+                          backgroundColor: 'common.black',
+                          color: 'white',
+                          fontWeight: 'bold',
+                          p: 2,
+                          display: 'inline-block',
+                        }}>
+                          Журнал регистрации измерений
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant={'subtitle1'}>Перейти на страницу
                           {' '}
-                          <Link href={'/maintenance'}><StyledLink style={{ cursor: 'pointer' }}>
+                          <StyledLink component={Link} href={'/maintenance'} style={{ cursor: 'pointer' }}>
                             журналов регламентных работ
-                          </StyledLink></Link>
+                          </StyledLink>
                         </Typography>
                         <Typography variant={'subtitle1'}><b>Внести показания</b></Typography>
                         <Tabs

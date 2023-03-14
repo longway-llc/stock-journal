@@ -2,7 +2,6 @@ import React, { FC, useEffect, useMemo, useState } from 'react'
 import {
   Button,
   Grid,
-  makeStyles,
   Paper,
   Table,
   TableBody,
@@ -12,23 +11,9 @@ import {
   TableRow,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import useAxios from 'axios-hooks'
-
-const useStyles = makeStyles(theme => ({
-  table: {},
-  textField: {
-    maxWidth: '100px',
-  },
-  box: {
-    display: 'flex',
-    alignItems: 'baseline',
-    flexWrap: 'wrap',
-    '& *': {
-      margin: theme.spacing(1),
-    },
-  },
-}))
+import Image from 'next/image'
 
 type TableResponse = {
   headers: string[],
@@ -41,7 +26,6 @@ type JournalViewerProps = {
 }
 
 const JournalViewer:FC<JournalViewerProps> = ({ type, needUpdate }) => {
-  const styles = useStyles()
   const [countRows, setCountRows] = useState(3)
 
   const [{ data, loading, error }, getDimensions] = useAxios<TableResponse>({
@@ -80,19 +64,28 @@ const JournalViewer:FC<JournalViewerProps> = ({ type, needUpdate }) => {
   }
   return (
         <Grid container>
-            <Grid item xs={12} className={styles.box}>
+            <Grid item xs={12}  sx={{
+              display: 'flex',
+              alignItems: 'baseline',
+              flexWrap: 'wrap',
+              '& *': {
+                margin: 1,
+              },
+            }}>
                 <Typography component={'span'}>Отобразить последние измерения <i>(макс: 5)</i></Typography>
                 <TextField label={'кол-во'}
-                           className={styles.textField}
+                           sx={{
+                             maxWidth: '100px',
+                           }}
                            value={countRows}
                            onChange={e => setCount(e.target.value)}/>
                 <Button variant={'text'} color={'primary'} onClick={() => getDimensions()}>отобразить</Button>
             </Grid>
             <Grid item xs={12}>
-                {loading && <img src="/small_preloader.svg" alt="loading..."/>}
+                {loading && <Image src="/small_preloader.svg" alt="loading..." width={30} height={30}/>}
                 {!!data &&
                 <TableContainer component={Paper}>
-                    <Table className={styles.table} size="small" aria-label="a dense table">
+                    <Table size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>
                                 {tableHeaders}

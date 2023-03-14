@@ -1,15 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
-import {  useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button, Checkbox, FormControlLabel,
   Grid,
   TextField, Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import useAxios from 'axios-hooks'
 import { useSWRConfig } from 'swr'
-import * as yup from 'yup'
+import { boolean, object, ObjectSchema, string } from 'yup'
 
 interface FormData {
   time: string
@@ -20,13 +20,13 @@ interface FormData {
   isRunIn:boolean
 }
 
-const schema: yup.SchemaOf<FormData> = yup.object().shape({
-  time: yup.string(),
-  employee: yup.string().required('Обязательное поле'),
-  isWorking: yup.boolean(),
-  isClean:yup.boolean(),
-  isTempCorrect	: yup.boolean(),
-  isRunIn:yup.boolean(),
+const schema: ObjectSchema<FormData> = object({
+  time: string(),
+  employee: string().required('Обязательное поле'),
+  isWorking: boolean(),
+  isClean:boolean(),
+  isTempCorrect	: boolean(),
+  isRunIn:boolean(),
 })
 
 const MonthlyRefrigiratorForm = () => {

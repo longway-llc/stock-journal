@@ -1,13 +1,6 @@
 import React, { FC, useMemo } from 'react'
-import {
-  makeStyles,
-  Paper,
-  Table,
-  TableBody,
-  TableCell, TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import Image from 'next/image'
 import useSWR from 'swr'
 
@@ -45,7 +38,7 @@ const TableViewer:FC<TableViewerProps> = ({ maintenance }) => {
 
   if (!tableData) {
     return <div className={styles.center}>
-      <Image src={'/small_preloader.svg'} width={80} height={80}/>
+      <Image src={'/small_preloader.svg'} alt={'Preloader icon'} width={80} height={80}/>
     </div>
   }
   return (

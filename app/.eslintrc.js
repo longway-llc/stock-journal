@@ -6,6 +6,7 @@ module.exports = {
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
+        'plugin:@next/next/recommended'
     ],
     plugins: [
         'react',
@@ -42,7 +43,7 @@ module.exports = {
         project: './tsconfig.json',
     },
     rules: {
-        // 'import/imports-first': 1,
+        'import/imports-first': 1,
         'import/prefer-default-export': 'off', // хотим только именованные экспорты
         'react/prop-types': 'off', // не используем propTypes
         'react/jsx-props-no-spreading': ['error', { exceptions: ['Component'] }], // обёртки для страниц

@@ -6,14 +6,13 @@ import {
   FormControl,
   Grid,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
   TextField,
   Typography,
-} from '@material-ui/core'
+} from '@mui/material'
 import useAxios from 'axios-hooks'
-import * as yup from 'yup'
+import { number, object, ObjectSchema, string } from 'yup'
 
 interface FormData {
   time: string
@@ -27,27 +26,18 @@ type RegisterFreezerFormProps = {
   callback: React.Dispatch<number>
 }
 
-const schema: yup.SchemaOf<FormData> = yup.object().shape({
-  time: yup.string(),
-  temperature: yup.number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
-  employee: yup.string().required('Обязательное поле'),
-  freezerName: yup.string().required('Обязательное поле'),
-  note: yup.string(),
+const schema: ObjectSchema<FormData> = object({
+  time: string(),
+  temperature: number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
+  employee: string().required('Обязательное поле'),
+  freezerName: string().required('Обязательное поле'),
+  note: string(),
 })
 
-const useStyles = makeStyles(theme => ({
-  dimensions: {
-    marginTop: theme.spacing(2),
-  },
-  textArea: {
-    width: '100%',
-    resize: 'none',
-  },
-}))
+
 
 
 const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
-  const styles = useStyles()
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -71,7 +61,11 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
 
   return (
         <Grid container component={'form'} spacing={2} noValidate autoComplete="off"
-              className={styles.dimensions} onSubmit={handleSubmit(submit)}>
+              onSubmit={handleSubmit(submit)}
+              sx={{
+                mt: 2,
+              }}
+        >
             <Grid item>
                 <TextField
                     inputProps={{ ...register('time') }}
@@ -116,9 +110,18 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
             </Grid>
             <Grid item xs={12}>
                 <Controller
-                    render={({ field: { value, onChange, onBlur } }) => <textarea onChange={onChange}
-                                                                              onBlur={onBlur} value={value}
-                                                                              className={styles.textArea} rows={5}/>}
+                    render={({ field: { value, onChange, onBlur } }) => (
+                      <textarea 
+                        onChange={onChange}
+                        onBlur={onBlur} 
+                        value={value} 
+                        rows={5}
+                        style={{
+                          width: '100%',
+                          resize: 'none',
+                        }}
+                      />
+                    )}
                     name="note"
                     control={control}
                     defaultValue=""

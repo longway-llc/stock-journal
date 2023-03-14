@@ -69,7 +69,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         if (!isNeedReplace) {
-          console.log('check')
           const newRow = {
             ...body,
             date: format(new Date(body.date), ldf),

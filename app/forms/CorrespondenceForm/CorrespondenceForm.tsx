@@ -8,30 +8,30 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   TextField,
   Typography, useMediaQuery, useTheme,
-} from '@material-ui/core'
+} from '@mui/material'
 import useAxios from 'axios-hooks'
 import { format } from 'date-fns'
-import * as yup from 'yup'
+import { number, object, ObjectSchema, string } from 'yup'
 
-import { employees } from '../../settings/employees'
 import { TFormData } from './types'
 
-const schema: yup.SchemaOf<TFormData> = yup.object().shape({
-  date: yup.string().required('Обязательное поле'),
-  type: yup.mixed().oneOf(['incoming', 'outgoing']).required('Обязательное поле'),
-  target: yup.string().required('Обязательное поле'),
-  theme: yup.string().required('Обязательное поле'),
-  listCount: yup.number().required('Обязательное поле').positive('Должно быть положительным значением'),
-  handler: yup.string().required('Обязательное поле'),
-  number: yup.string().required('Обязательное поле, если отсутствует поставьте "-"'),
-  lastReplyDate: yup.string().notRequired(),
+const schema: ObjectSchema<TFormData> = object({
+  date: string().required('Обязательное поле'),
+  type: string().oneOf(['incoming', 'outgoing']).required('Обязательное поле'),
+  target: string().required('Обязательное поле'),
+  theme: string().required('Обязательное поле'),
+  listCount: number().required('Обязательное поле').positive('Должно быть положительным значением'),
+  handler: string().required('Обязательное поле'),
+  number: string().required('Обязательное поле, если отсутствует поставьте "-"'),
+  lastReplyDate: string().notRequired(),
 })
 
 const CorrespondenceForm = ({ refetch }) => {
   const theme = useTheme()
-  const isXs = useMediaQuery(theme.breakpoints.down('xs'))
+  const isXs = useMediaQuery(theme.breakpoints.down('md'))
   const [{ loading, error }, sendData] = useAxios({
     url: '/api/correspondence',
     method: 'post',
@@ -50,11 +50,11 @@ const CorrespondenceForm = ({ refetch }) => {
 
   const [messageType, setMessageType] = useState<TFormData['type']>('outgoing')
   const [handler, setHandler] = useState<TFormData['handler']>('')
-  const handleSelectMessageType = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectMessageType = (event: SelectChangeEvent<TFormData['type']>) => {
     setMessageType(event.target.value as TFormData['type'])
   }
 
-  const handleSelectHandler = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectHandler = (event: SelectChangeEvent) => {
     setHandler(event.target.value as TFormData['handler'])
   }
   const onSubmit: SubmitHandler<TFormData> = async (data) => {
@@ -147,11 +147,9 @@ const CorrespondenceForm = ({ refetch }) => {
               value={handler}
               onChange={handleSelectHandler}
               inputProps={{ ...register('handler') }}
-              error={!!errors.handler}
               error={!!errors.handler && !employeesError}
               disabled={employeesLoading}
             >
-              {employees.map(employee => <MenuItem key={employee} value={employee}>{employee}</MenuItem>)}
               {employeesData?.rows.map(employee => <MenuItem key={employee} value={employee}>{employee}</MenuItem>)}
             </Select>
           </FormControl>

@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core'
+import { createTheme } from '@mui/material'
 
 import { F } from './fonts/fonts'
 
@@ -92,32 +92,36 @@ export const theme = createTheme({
       fontWeight: 300,
     },
   },
-  overrides: {
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '@font-face': [helveticaBold, helveticaLight, helveticaMedium, helveticaRoman],
+      styleOverrides: {
+        '@global': {
+          '@font-face': [helveticaBold, helveticaLight, helveticaMedium, helveticaRoman],
+        },
       },
     },
     MuiBottomNavigation: {
-      root: {
-        backgroundColor: mainColor,
+      styleOverrides: {
+        root: {
+          backgroundColor: mainColor,
+        },
       },
     },
     MuiBottomNavigationAction: {
-      root: {
-        color: 'rgba(255, 255, 255, 0.54)',
-        '&$selected': {
-          color: 'white',
+      styleOverrides: {
+        root: {
+          color: 'rgba(255, 255, 255, 0.54)',
+          '&$selected': {
+            color: 'white',
+          },
+        },
+        label: {
+          color: 'rgba(255, 255, 255, 0.54)',
+          '&$selected': {
+            color: 'white',
+          },
         },
       },
-      label: {
-        color: 'rgba(255, 255, 255, 0.54)',
-        '&$selected': {
-          color: 'white',
-        },
-      },
-      wrapper: {},
     },
-
   },
 })

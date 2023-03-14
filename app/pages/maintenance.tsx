@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import {
   Container,
-  createStyles,
   FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
   Link as StyledLink,
-  makeStyles, Radio, RadioGroup,
+  Radio,
+  RadioGroup,
   Typography,
   useTheme,
-} from '@material-ui/core'
+} from '@mui/material'
 import { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -22,19 +22,6 @@ import { ShelvingEquipmentForm }
 import { TableViewer } from '../modules/pages/maintenance/TableViewer'
 
 
-const useStyles = makeStyles(theme => createStyles({
-  root: {
-    marginTop: theme.spacing(7),
-  },
-  header: {
-    backgroundColor: theme.palette.common.black,
-    color: 'white',
-    fontWeight: 'bold',
-    padding: theme.spacing(2),
-    display: 'inline-block',
-  },
-}))
-
 const FormType = {
   shelvingEquipment: <ShelvingEquipmentForm />,
   dailyRefrigerator: <DailyRefrigiratorForm/>,
@@ -45,7 +32,6 @@ export type MaintenanceName = 'shelvingEquipment' | 'dailyRefrigerator' | 'month
 
 const Maintenance:NextPage = () => {
   const theme = useTheme()
-  const styles = useStyles()
 
   const [maintenance, setMaintenance] = useState<MaintenanceName>('shelvingEquipment')
 
@@ -63,10 +49,21 @@ const Maintenance:NextPage = () => {
       <link rel="shortcut icon" href="/favicon-admin-192x192.png" type="image/x-icon"/>
     </Head>
 
-      <Container className={styles.root} maxWidth={'md'}>
+      <Container maxWidth={'md'} sx={{
+        mt: 7,
+      }}>
         <Grid container spacing={3} direction={'column'}>
           <Grid item xs={12}>
-            <Typography variant={'h4'} className={styles.header}>Журнал регламентных работ</Typography>
+            <Typography 
+              variant={'h4'}
+              sx={{
+                backgroundColor: 'common.black',
+                color: 'white',
+                fontWeight: 'bold',
+                p: 2,
+                display: 'inline-block',
+              }}
+            >Журнал регламентных работ</Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant={'subtitle1'}>Перейти на страницу
