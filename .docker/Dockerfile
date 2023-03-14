@@ -1,4 +1,4 @@
-FROM node:15.10.0-alpine3.13
+FROM node:18.15.0-alpine3.17
 
 EXPOSE 3040
 
