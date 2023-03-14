@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const [type, countLastRows] = googleSheet as string[]
 
-    const doc = new GoogleSpreadsheet(process.env.SHEET_ID)
+    const doc = new GoogleSpreadsheet(process.env.STOCK_SHEET_ID)
     await doc.useServiceAccountAuth(creds)
     await doc.loadInfo()
 

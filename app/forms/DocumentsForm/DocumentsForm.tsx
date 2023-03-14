@@ -37,6 +37,12 @@ const DocumentsForm = ({ refetch }) => {
     method: 'post',
   }, { manual: true })
 
+  const [{ data: employeesData, loading: employeesLoading, error: employeesError }] = useAxios({
+    url: '/api/employees',
+    method: 'get',
+
+  } )
+
   const { register, formState: { errors }, handleSubmit } = useForm<TFormData>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -144,8 +150,11 @@ const DocumentsForm = ({ refetch }) => {
               onChange={handleSelectHandler}
               inputProps={{ ...register('handler') }}
               error={!!errors.handler}
+              error={!!errors.handler && !employeesError}
+              disabled={employeesLoading}
             >
               {employees.map(employee => <MenuItem key={employee} value={employee}>{employee}</MenuItem>)}
+              {employeesData?.rows.map(employee => <MenuItem key={employee} value={employee}>{employee}</MenuItem>)}
             </Select>
           </FormControl>
         </Grid>
