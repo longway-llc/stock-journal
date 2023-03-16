@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
+  Alert,
   Button,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
-  Select, SelectChangeEvent,
+  Select, SelectChangeEvent, Snackbar,
   TextField,
   Typography, useMediaQuery, useTheme,
 } from '@mui/material'
@@ -31,10 +32,28 @@ const schema: ObjectSchema<TFormData> = object({
 const DocumentsForm = ({ refetch }) => {
   const theme = useTheme()
   const isXs = useMediaQuery(theme.breakpoints.down('md'))
-  const [{ loading, error }, sendData] = useAxios({
+
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpenSnackbar(false)
+  }
+
+  const [{ data: sendingData, loading: sendingLoading, error: sendingErorr, response: sendingResponse }, sendData] = useAxios({
     url: '/api/documents',
     method: 'post',
   }, { manual: true })
+
+  useEffect(() => {
+    if (sendingData) {
+      setOpenSnackbar(true)
+    }
+  }, [sendingData])
 
   const [{ data: employeesData, loading: employeesLoading, error: employeesError }] = useAxios({
     url: '/api/employees',
@@ -67,6 +86,7 @@ const DocumentsForm = ({ refetch }) => {
   }
 
   return (
+    <>
     <Grid component="form" container wrap="wrap" item xs={12} md={4} lg={3} xl={2} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={12}>
@@ -187,20 +207,37 @@ const DocumentsForm = ({ refetch }) => {
             type="submit"
             variant="contained"
             color="primary"
-            disabled={loading}
+            disabled={sendingLoading}
           >
             Отправить
           </Button>
         </Grid>
-        {error && (
+        {sendingErorr && (
           <Grid item>
             <Typography color="error">
-              отправка не удалась: {error.response.data.message}
+              отправка не удалась: {sendingErorr.response.data.message}
             </Typography>
           </Grid>
         )}
       </Grid>
     </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSnackbar}
+        onClose={handleClose}
+      >
+        {
+          sendingResponse?.status !== 200
+            ? (
+              <Alert onClose={handleClose} severity="error">
+                При добавлении письма произошла ошибка
+              </Alert>
+            ) : (
+              <Alert severity="success" onClose={handleClose}>Письмо успешно добавлено</Alert>
+            )
+        }
+      </Snackbar>
+    </>
   )
 }
 

@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       case 'GET': {
         return res.status(200).json( {
           headers: sheet.headerValues,
-          rows: rows.map(r=>r._rawData),
+          rows: rows.map(r=>r.employee),
         })
       }
     }
