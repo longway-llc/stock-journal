@@ -152,7 +152,7 @@ const Correspondence:NextPage = () => {
           <Typography variant="subtitle2">
             Посмотреть все записи по
             {' '}
-            <Link href="https://docs.google.com/spreadsheets/d/1r0rLeu3AJO1xxfCqCUcAmDKeyB-xL8nk-txfOgSn1zU/edit#gid=0">
+            <Link href="https://docs.google.com/spreadsheets/d/19x3eufCEPZla6qAk7Qsfu4Wqjk-DbWWuPFgv1EJ6yEs">
               ссылке
             </Link>
           </Typography>
