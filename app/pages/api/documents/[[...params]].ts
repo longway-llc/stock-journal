@@ -10,6 +10,7 @@ enum DocType {
   'memo' = 'СЗ',
   'order' = 'П',
   'doc' = 'Р',
+  'proxy' = 'Д',
 }
 
 const ldf = 'dd.MM.yyyy'
@@ -18,6 +19,7 @@ const type = {
   memo: 'Служебная записка',
   order: 'Приказ',
   doc: 'Распоряжение',
+  proxy: 'Доверенность',
 }
 
 const getDateFromCell = (dateCell: string): Date => {

@@ -20,7 +20,7 @@ import { TFormData } from './types'
 
 const schema: ObjectSchema<TFormData> = object({
   date: string().required('Обязательное поле'),
-  type: string().oneOf(['memo', 'order', 'doc']).required('Обязательное поле'),
+  type: string().oneOf(['memo', 'order', 'doc', 'proxy']).required('Обязательное поле'),
   target: string().required('Обязательное поле'),
   theme: string().required('Обязательное поле'),
   listCount: number().required('Обязательное поле').positive('Должно быть положительным значением'),
@@ -118,6 +118,7 @@ const DocumentsForm = ({ refetch }) => {
               <MenuItem value="memo">Служебная записка</MenuItem>
               <MenuItem value="order">Приказ</MenuItem>
               <MenuItem value="doc">Распоряжение</MenuItem>
+              <MenuItem value="proxy">Доверенность</MenuItem>
             </Select>
           </FormControl>
         </Grid>
