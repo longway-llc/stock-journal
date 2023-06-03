@@ -111,6 +111,7 @@ const CorrespondenceForm = ({ refetch }) => {
             <Select
               labelId="select-message-type-label"
               id="select-message-type"
+              label="Тип письма"
               value={messageType}
               onChange={handleSelectMessageType}
               inputProps={{ ...register('type') }}
@@ -166,6 +167,7 @@ const CorrespondenceForm = ({ refetch }) => {
             <Select
               labelId="select-handler-label"
               id="select-handler-type"
+              label="Ответственный (Исполнитель)"
               value={handler}
               onChange={handleSelectHandler}
               inputProps={{ ...register('handler') }}
