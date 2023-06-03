@@ -29,7 +29,7 @@ const getDateFromCell = (dateCell: string): Date => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const doc = new GoogleSpreadsheet('19x3eufCEPZla6qAk7Qsfu4Wqjk-DbWWuPFgv1EJ6yEs')
+    const doc = new GoogleSpreadsheet(process.env.DOCUMENTS_SHEET_ID)
     await doc.useServiceAccountAuth(creds)
     await doc.loadInfo()
 
