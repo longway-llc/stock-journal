@@ -1,13 +1,15 @@
-FROM node:18.15.0-alpine3.17
+FROM node:20-alpine3.19
 
 EXPOSE 3040
 
 WORKDIR /app
 
-COPY ../app/package*.json .
+COPY ../app/package.json ../app/.yarnrc.yml ../app/yarn.lock /app/
 
-RUN yarn
+RUN corepack enable
 
-COPY ../app .
+RUN yarn --frozen-lockfile
+
+COPY ../app /app
 
 RUN yarn build
