@@ -54,7 +54,7 @@ const Maintenance:NextPage = () => {
       }}>
         <Grid container spacing={3} direction={'column'}>
           <Grid item xs={12}>
-            <Typography 
+            <Typography
               variant={'h4'}
               sx={{
                 backgroundColor: 'common.black',
@@ -68,7 +68,7 @@ const Maintenance:NextPage = () => {
           <Grid item xs={12}>
             <Typography variant={'subtitle1'}>Перейти на страницу
               {' '}
-              <Link href={'/'}><StyledLink style={{ cursor: 'pointer' }}>
+              <Link href={'/'}><StyledLink style={{ cursor: 'pointer' }} component="span">
                 журнала измерений
               </StyledLink></Link>
             </Typography>

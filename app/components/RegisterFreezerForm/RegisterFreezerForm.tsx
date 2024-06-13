@@ -40,6 +40,7 @@ const schema: ObjectSchema<FormData> = object({
 const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
+    // @ts-ignore TODO: Разобраться в ошибке типов
     resolver: yupResolver(schema),
     defaultValues: {
       freezerName: '№1',

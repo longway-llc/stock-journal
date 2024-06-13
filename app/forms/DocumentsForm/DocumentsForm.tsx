@@ -63,6 +63,7 @@ const DocumentsForm = ({ refetch }) => {
 
   const { register, formState: { errors }, handleSubmit } = useForm<TFormData>({
     mode: 'onBlur',
+    // @ts-ignore TODO: Разобраться в ошибке типов
     resolver: yupResolver(schema),
   })
 

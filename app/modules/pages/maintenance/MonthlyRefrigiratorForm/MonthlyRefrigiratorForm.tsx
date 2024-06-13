@@ -33,6 +33,7 @@ const MonthlyRefrigiratorForm = () => {
   const { mutate } = useSWRConfig()
   const { register, formState: { errors }, handleSubmit } = useForm<FormData>({
     mode: 'onBlur',
+    // @ts-ignore TODO: Разобраться в ошибке типов
     resolver: yupResolver(schema),
     defaultValues: {
       isClean: false,

@@ -28,6 +28,7 @@ type RegisterStockFormProps = {
 const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
+    // @ts-ignore TODO: Разобраться в ошибке типов
     resolver: yupResolver(schema),
   })
 

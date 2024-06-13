@@ -38,7 +38,7 @@ const CorrespondenceForm = ({ refetch }) => {
 
   const [openSnackbar, setOpenSnackbar] = useState(false)
 
-  
+
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return
@@ -46,7 +46,7 @@ const CorrespondenceForm = ({ refetch }) => {
 
     setOpenSnackbar(false)
   }
-  
+
   const [{ data: sendingData, loading: sendingLoading, error: sendingError, response: sendingResponse }, sendData] = useAxios({
     url: '/api/correspondence',
     method: 'post',
@@ -57,7 +57,7 @@ const CorrespondenceForm = ({ refetch }) => {
       setOpenSnackbar(true)
     }
   }, [sendingData])
-  
+
   const [{ data: employeesData, loading: employeesLoading, error: employeesError }] = useAxios({
     url: '/api/employees',
     method: 'get',
@@ -65,6 +65,7 @@ const CorrespondenceForm = ({ refetch }) => {
 
   const { register, formState: { errors }, handleSubmit } = useForm<TFormData>({
     mode: 'onBlur',
+    // @ts-ignore TODO: Разобраться в ошибке типов
     resolver: yupResolver(schema),
   })
 
