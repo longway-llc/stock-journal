@@ -65,6 +65,7 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
               onSubmit={handleSubmit(submit)}
               sx={{
                 mt: 2,
+                flexDirection: 'column',
               }}
         >
             <Grid item>
@@ -79,28 +80,28 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
                     }}
                 />
             </Grid>
+            <Grid item xs>
+            <FormControl sx={{ minWidth:'230px' }}>
+              <InputLabel id="freezerName-label">Холодильник</InputLabel>
+              <Select
+                labelId="freezerName-label"
+                id="freezerName"
+                defaultValue={'№1'}
+                label='Холодильник'
+                inputProps={{ ...register('freezerName') }}
+                error={!!errors.freezerName}
+              >
+                <MenuItem value={'№1'}>№1</MenuItem>
+                <MenuItem value={'№2'}>№2</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
             <Grid item>
                 <TextField label="Температура"
                            inputProps={{ ...register('temperature') }}
                            error={!!errors.temperature}
                            helperText={errors.temperature?.message}
                 />
-            </Grid>
-          <Grid item xs>
-            <FormControl fullWidth>
-              <InputLabel id="freezerName-label">Холодильник</InputLabel>
-              <Select
-                labelId="freezerName-label"
-                id="freezerName"
-                defaultValue={'№1'}
-                inputProps={{ ...register('freezerName') }}
-                error={!!errors.freezerName}
-
-              >
-                <MenuItem value={'№1'}>№1</MenuItem>
-                <MenuItem value={'№2'}>№2</MenuItem>
-              </Select>
-            </FormControl>
             </Grid>
             <Grid item>
                 <TextField label="Сотрудник"
@@ -112,10 +113,10 @@ const RegisterFreezerForm: FC<RegisterFreezerFormProps> = ({ callback }) => {
             <Grid item xs={12}>
                 <Controller
                     render={({ field: { value, onChange, onBlur } }) => (
-                      <textarea 
+                      <textarea
                         onChange={onChange}
-                        onBlur={onBlur} 
-                        value={value} 
+                        onBlur={onBlur}
+                        value={value}
                         rows={5}
                         style={{
                           width: '100%',

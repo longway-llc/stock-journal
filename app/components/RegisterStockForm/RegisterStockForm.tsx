@@ -1,12 +1,13 @@
-import React, { FC } from 'react'
+import React, { FC, useId } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Grid, TextField, Typography } from '@mui/material'
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import useAxios from 'axios-hooks'
 import { number, object, ObjectSchema, string } from 'yup'
 
 interface FormData {
   time: string
+  stockName: string
   temperature: number
   humidity: number
   employee: string
@@ -15,6 +16,7 @@ interface FormData {
 
 const schema: ObjectSchema<FormData> = object({
   time: string(),
+  stockName: string(),
   temperature: number().test('value', 'Значение вне диапазона', t => t < 50 && t > -50).required('Обязательное поле'),
   humidity: number().test('value', 'Значение вне диапазона', h => h < 100 && h >= 0).required('Обязательное поле'),
   employee: string().required('Обязательное поле'),
@@ -26,6 +28,8 @@ type RegisterStockFormProps = {
 }
 
 const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
+  const randomId = useId()
+
   const { register, formState: { errors }, handleSubmit, control } = useForm<FormData>({
     mode: 'onBlur',
     // @ts-ignore TODO: Разобраться в ошибке типов
@@ -49,6 +53,7 @@ const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
         <Grid container component={'form'} spacing={2} noValidate autoComplete="off"
               sx={{
                 marginTop: 2,
+                flexDirection: 'column',
               }}
               onSubmit={handleSubmit(submit)}>
             <Grid item>
@@ -62,6 +67,25 @@ const RegisterStockForm: FC<RegisterStockFormProps> = ({ callback }) => {
                       shrink: true,
                     }}
                 />
+            </Grid>
+            <Grid item>
+              <FormControl sx={{ minWidth:'230px' }}>
+                <InputLabel id={`${randomId}-label`}>
+                  Склад
+                </InputLabel>
+                <Select
+                  labelId={`${randomId}-label`}
+                  id={randomId}
+                  inputProps={{ ...register('stockName') }}
+                  label="Склад"
+                  defaultValue="Склад №1"
+                  error={!!errors?.stockName}
+                >
+                  <MenuItem value={'Склад №1'}>Склад №1</MenuItem>
+                  <MenuItem value={'Склад №2'}>Склад №2</MenuItem>
+                  <MenuItem value={'Склад №3'}>Склад №3</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item>
                 <TextField label="Температура"
