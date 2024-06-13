@@ -1,10 +1,8 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { creds } from '../../../settings/creds'
+import { jwt } from '../../../utils/JWT'
 import { MaintenanceName } from '../../maintenance'
-
-
 
 const getSheetByType = (doc: GoogleSpreadsheet, type: MaintenanceName): GoogleSpreadsheetWorksheet | null => {
   switch (type) {
@@ -33,8 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const [type, countLastRows] = params as string[]
 
-    const doc = new GoogleSpreadsheet(process.env.MAINTENANCE_SHEET_ID)
-    await doc.useServiceAccountAuth(creds)
+    const doc = new GoogleSpreadsheet(process.env.MAINTENANCE_SHEET_ID, jwt)
     await doc.loadInfo()
 
     // Загружаем лист
@@ -62,6 +59,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         return res.status(200).json( {
           headers: sheet.headerValues,
+          // @ts-expect-error FIXME: переписать без использования _rawData
           rows: lastRows.map(r=>r._rawData),
         })
       }

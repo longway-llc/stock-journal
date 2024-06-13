@@ -3,7 +3,7 @@ import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadshee
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { TFormData } from '../../../forms/CorrespondenceForm/types'
-import { creds } from '../../../settings/creds'
+import { jwt } from '../../../utils/JWT'
 
 
 enum DocType {
@@ -29,8 +29,7 @@ const getDateFromCell = (dateCell: string): Date => {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const doc = new GoogleSpreadsheet(process.env.DOCUMENTS_SHEET_ID)
-    await doc.useServiceAccountAuth(creds)
+    const doc = new GoogleSpreadsheet(process.env.DOCUMENTS_SHEET_ID, jwt)
     await doc.loadInfo()
 
     const sheet: GoogleSpreadsheetWorksheet = await doc.sheetsByTitle.documentsData
@@ -53,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(200).json(newRow)
         }
 
-        const lastDate = getDateFromCell(rows[rows.length - 1].date)
+        const lastDate = getDateFromCell(rows[rows.length - 1].get('date'))
 
         const isNewestDay = lastDate.getDate() < reqDate.getDate()
 
@@ -63,7 +62,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           id = `${format(reqDate, ldf)}-${DocType[body.type]}.1`
           //  Если дата совпадает с последней, наращиваем количество сообщений за день
         } else if (reqDate.getDate() == lastDate.getDate()) {
-          const todayMessageCount = rows.filter(row => row.date == format(reqDate, ldf)).length
+          const todayMessageCount = rows.filter(row => row.get('date') == format(reqDate, ldf)).length
           id = `${format(reqDate, ldf)}-${DocType[body.type]}.${todayMessageCount}`
           // Если добавить в конец документа в данном случае невозможно, то переходим к вставке с перезаписью документа
         } else {
@@ -82,22 +81,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         } else {
           const currentDate = format(reqDate, ldf)
 
+          // @ts-expect-error FIXME: переписать без использования _rawData
           const rawRows = rows.map(row => row._rawData)
-          let firstIndexOfReqDate = rows.map(row => row.date).indexOf(currentDate)
+          let firstIndexOfReqDate = rows.map(row => row.get('date')).indexOf(currentDate)
           let lastIndexOfReqDate: number = null
           let isSingle = false
           // Если вставляемой даты нет в документе, ищем первую, которая больше
           if (firstIndexOfReqDate === -1) {
             isSingle = true
             firstIndexOfReqDate = rows.findIndex(row => {
-              const checkDate = getDateFromCell(row.date)
+              const checkDate = getDateFromCell(row.get('date'))
               return checkDate.getDate() > reqDate.getDate()
             })
             const isFirst = firstIndexOfReqDate == 0
             firstIndexOfReqDate = isFirst ? 0 : firstIndexOfReqDate - 1
             lastIndexOfReqDate = isFirst ? -1 : firstIndexOfReqDate
           } else {
-            lastIndexOfReqDate = rows.map(row => row.date).lastIndexOf(currentDate)
+            lastIndexOfReqDate = rows.map(row => row.get('date')).lastIndexOf(currentDate)
           }
 
           const headRows = rawRows.slice(0, firstIndexOfReqDate)
@@ -143,6 +143,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         return res.status(200).json( {
           headers: sheet.headerValues,
+          // @ts-expect-error FIXME: переписать без использования _rawData
           rows: lastRows.map(r=>r._rawData),
         })
       }

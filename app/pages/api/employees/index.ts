@@ -1,23 +1,22 @@
 import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { creds } from '../../../settings/creds'
+import { jwt } from '../../../utils/JWT'
 
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const doc = new GoogleSpreadsheet(process.env.EMPLOYEES_SHEET_ID)
-    await doc.useServiceAccountAuth(creds)
+    const doc = new GoogleSpreadsheet(process.env.EMPLOYEES_SHEET_ID, jwt)
     await doc.loadInfo()
 
-    const sheet: GoogleSpreadsheetWorksheet = await doc.sheetsByTitle.employees
+    const sheet: GoogleSpreadsheetWorksheet = doc.sheetsByTitle.employees
     const rows = await sheet.getRows()
 
     switch (req.method) {
       case 'GET': {
         return res.status(200).json( {
           headers: sheet.headerValues,
-          rows: rows.map(r=>r.employee),
+          rows: rows.map(r=>r.get('employee')),
         })
       }
     }
